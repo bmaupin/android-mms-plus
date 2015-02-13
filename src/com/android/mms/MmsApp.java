@@ -17,14 +17,16 @@
 
 package com.android.mms;
 
+import java.util.Locale;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.drm.DrmManagerClient;
-import android.location.Country;
-import android.location.CountryDetector;
-import android.location.CountryListener;
+//import android.location.Country;
+//import android.location.CountryDetector;
+//import android.location.CountryListener;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.SearchRecentSuggestions;
@@ -49,8 +51,8 @@ public class MmsApp extends Application {
 
     private SearchRecentSuggestions mRecentSuggestions;
     private TelephonyManager mTelephonyManager;
-    private CountryDetector mCountryDetector;
-    private CountryListener mCountryListener;
+//    private CountryDetector mCountryDetector;
+//    private CountryListener mCountryListener;
     private String mCountryIso;
     private static MmsApp sMmsApp = null;
     private PduLoaderManager mPduLoaderManager;
@@ -75,6 +77,7 @@ public class MmsApp extends Application {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         // Figure out the country *before* loading contacts and formatting numbers
+/*        
         mCountryDetector = (CountryDetector) getSystemService(Context.COUNTRY_DETECTOR);
         mCountryListener = new CountryListener() {
             @Override
@@ -83,7 +86,7 @@ public class MmsApp extends Application {
             }
         };
         mCountryDetector.addCountryListener(mCountryListener, getMainLooper());
-
+*/
         Context context = getApplicationContext();
         mPduLoaderManager = new PduLoaderManager(context);
         mThumbnailManager = new ThumbnailManager(context);
@@ -121,7 +124,7 @@ public class MmsApp extends Application {
 
     @Override
     public void onTerminate() {
-        mCountryDetector.removeCountryListener(mCountryListener);
+//        mCountryDetector.removeCountryListener(mCountryListener);
     }
 
     @Override
@@ -170,13 +173,37 @@ public class MmsApp extends Application {
         return mRecentSuggestions;
     }
 
+    // http://stackoverflow.com/a/19415296/399105
+    /**
+     * Get ISO 3166-1 alpha-2 country code for this device (or null if not available)
+     * @param context Context reference to get the TelephonyManager instance from
+     * @return country code or null
+     */
+    public static String getUserCountry(Context context) {
+        final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        final String simCountry = tm.getSimCountryIso();
+        if (simCountry != null && simCountry.length() == 2) { // SIM country code is available
+            return simCountry.toLowerCase(Locale.US);
+        }
+        else if (tm.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
+            String networkCountry = tm.getNetworkCountryIso();
+            if (networkCountry != null && networkCountry.length() == 2) { // network country code is available
+                return networkCountry.toLowerCase(Locale.US);
+            }
+        }
+        return null;
+    }
+    
     // This function CAN return null.
     public String getCurrentCountryIso() {
         if (mCountryIso == null) {
+/*        	
             Country country = mCountryDetector.detectCountry();
             if (country != null) {
                 mCountryIso = country.getCountryIso();
             }
+*/
+        	mCountryIso = getUserCountry(this);
         }
         return mCountryIso;
     }
