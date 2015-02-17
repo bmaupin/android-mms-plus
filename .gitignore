@@ -24,3 +24,9 @@ proguard/
 
 # Log Files
 *.log
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+project.properties
