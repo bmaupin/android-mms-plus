@@ -47,3 +47,9 @@ Steps:
             mount -o ro,remount /dev/block/mmcblk0p9 /system
 
 3. Reboot
+
+
+Building
+---
+
+See: [Building](https://github.com/bmaupin/android-sms-plus/wiki/Building)
