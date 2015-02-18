@@ -385,8 +385,8 @@
     <!-- Settings item description for boolean MMS auto-retrieve while roaming option -->
     <string name="pref_summary_mms_retrieval_during_roaming">Automatically retrieve messages while roaming</string>
     
-    <string name="pref_summary_mms_enable_data">Enable mobile data automatically when sending/receiving MMS messages</string>
-    <string name="pref_title_mms_enable_data">Enable mobile data</string>
+    <string name="pref_summary_mms_enable_data">Automatically enable/disable mobile data when sending/receiving MMS messages</string>
+    <string name="pref_title_mms_enable_data">Automatically enable data</string>
 
     <!-- Confirm Delete -->
     <!-- Delete confirmation dialog title -->
