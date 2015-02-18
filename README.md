@@ -1,2 +1,2 @@
-# android-mms-plus
+# android-sms-plus
 Stock Android MMS app
